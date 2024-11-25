@@ -3,89 +3,51 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Interactive Music Visualizer</title>
-    <style>
-        body {
-            margin: 0;
-            overflow: hidden;
-            background: #f0f0f0; /* Off-white background */
-        }
-        canvas {
-            display: block;
-            background-color: #f0f0f0; /* Ensure canvas matches background */
-        }
-    </style>
+    <title>My First Website</title>
+    <link rel="stylesheet" href="style.css"> <!-- Link to CSS file -->
 </head>
 <body>
-    <canvas id="canvas"></canvas>
-    <audio id="audio" src="audio.mp3" loop></audio>
+    <h1>Welcome to My First Website!</h1>
+    <p class="welcome-text">
+        Hello there!<br>
+        This is my very first website.<br>
+        I hope you like it!
+    </p>
+    <img src="image.jpg" alt="A descriptive alt text" class="welcome-image">
+
+    <!-- Audio Section -->
+    <div class="audio-container">
+        <p>Enjoy some music while you explore:</p>
+        <audio id="audio" controls>
+            <source src="audio.mp3" type="audio/mpeg"> 
+            Your browser does not support the audio element.
+        </audio>
+    </div>
+
     <script>
-        const canvas = document.getElementById('canvas');
-        const ctx = canvas.getContext('2d');
         const audio = document.getElementById('audio');
-        const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-        const analyser = audioContext.createAnalyser();
-        const source = audioContext.createMediaElementSource(audio);
-        const gainNode = audioContext.createGain();
 
-        // Connect audio nodes
-        source.connect(gainNode);
-        gainNode.connect(analyser);
-        analyser.connect(audioContext.destination);
+        // Mouse movement event listener
+        document.body.addEventListener('mousemove', (e) => {
+            // Get the canvas size (full window)
+            const width = window.innerWidth;
+            const height = window.innerHeight;
 
-        // Ensure canvas dimensions match the screen
-        canvas.width = window.innerWidth;
-        canvas.height = window.innerHeight;
+            // Map mouse X to Red (0-255)
+            const red = Math.min(255, (e.clientX / width) * 255);
 
-        // Configure analyser
-        analyser.fftSize = 256;
-        const bufferLength = analyser.frequencyBinCount;
-        const dataArray = new Uint8Array(bufferLength);
+            // Map mouse Y to Green (0-255)
+            const green = Math.min(255, (e.clientY / height) * 255);
 
-        // Play audio on user interaction (click to resume AudioContext and start audio)
-        function startAudio() {
-            audioContext.resume().then(() => {
-                audio.play();
-                renderVisualizer(); // Start the visualizer rendering
-                window.removeEventListener('click', startAudio); // Remove click listener after starting
-            });
-        }
-        window.addEventListener('click', startAudio); // User must click to start audio
+            // Set the Blue value to a static value, e.g., 200
+            const blue = 200;
 
-        // Visualizer rendering function
-        function renderVisualizer() {
-            analyser.getByteFrequencyData(dataArray);
-            ctx.clearRect(0, 0, canvas.width, canvas.height); // Clear canvas with off-white background
-            ctx.fillStyle = '#f0f0f0'; // Fill the entire canvas with off-white
-            ctx.fillRect(0, 0, canvas.width, canvas.height);
+            // Change the background color based on mouse movement
+            document.body.style.backgroundColor = `rgb(${red}, ${green}, ${blue})`;
 
-            const barWidth = (canvas.width / bufferLength) * 2.5;
-            let barHeight;
-            let x = 0;
-
-            for (let i = 0; i < bufferLength; i++) {
-                barHeight = dataArray[i];
-                ctx.fillStyle = '#000000'; // Black color for visualizer bars
-                ctx.fillRect(x, canvas.height - barHeight / 2, barWidth, barHeight / 2);
-                x += barWidth + 1;
-            }
-
-            requestAnimationFrame(renderVisualizer);
-        }
-
-        // Mouse interactivity for volume and playback speed
-        canvas.addEventListener('mousemove', (e) => {
-            const volume = e.clientY / canvas.height; // Y-axis: volume (0.0 - 1.0)
-            const speed = e.clientX / canvas.width * 2; // X-axis: playback speed (0.0 - 2.0)
-
-            gainNode.gain.value = 1 - volume; // Invert for intuitive control
-            audio.playbackRate = speed.toFixed(2); // Smooth speed adjustment
-        });
-
-        // Resize canvas dynamically
-        window.addEventListener('resize', () => {
-            canvas.width = window.innerWidth;
-            canvas.height = window.innerHeight;
+            // Control the volume with the mouse Y position (invert for intuitive control)
+            const volume = 1 - (e.clientY / height);
+            audio.volume = volume; // Set the audio volume
         });
     </script>
 </body>
