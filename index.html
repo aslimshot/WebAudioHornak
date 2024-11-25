@@ -8,10 +8,11 @@
         body {
             margin: 0;
             overflow: hidden;
-            background: black;
+            background: #f0f0f0; /* Off-white background */
         }
         canvas {
             display: block;
+            background-color: #f0f0f0; /* Ensure canvas matches background */
         }
     </style>
 </head>
@@ -53,7 +54,9 @@
         // Visualizer rendering function
         function renderVisualizer() {
             analyser.getByteFrequencyData(dataArray);
-            ctx.clearRect(0, 0, canvas.width, canvas.height);
+            ctx.clearRect(0, 0, canvas.width, canvas.height); // Clear canvas with off-white background
+            ctx.fillStyle = '#f0f0f0'; // Fill the entire canvas with off-white
+            ctx.fillRect(0, 0, canvas.width, canvas.height);
 
             const barWidth = (canvas.width / bufferLength) * 2.5;
             let barHeight;
@@ -61,11 +64,7 @@
 
             for (let i = 0; i < bufferLength; i++) {
                 barHeight = dataArray[i];
-                const red = Math.min(255, barHeight + 50);
-                const green = Math.min(255, 255 - barHeight);
-                const blue = Math.min(255, 150 - barHeight / 2);
-
-                ctx.fillStyle = `rgb(${red},${green},${blue})`;
+                ctx.fillStyle = '#000000'; // Black color for visualizer bars
                 ctx.fillRect(x, canvas.height - barHeight / 2, barWidth, barHeight / 2);
                 x += barWidth + 1;
             }
