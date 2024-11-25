@@ -8,7 +8,7 @@
         body {
             margin: 0;
             overflow: hidden;
-            background: red;
+            background: black;
         }
         canvas {
             display: block;
@@ -27,31 +27,43 @@
         const source = audioContext.createMediaElementSource(audio);
         const gainNode = audioContext.createGain();
 
+        // Connect audio nodes
         source.connect(gainNode);
         gainNode.connect(analyser);
         analyser.connect(audioContext.destination);
 
-        audio.play();
-
+        // Ensure canvas dimensions match the screen
         canvas.width = window.innerWidth;
         canvas.height = window.innerHeight;
 
+        // Configure analyser
         analyser.fftSize = 256;
         const bufferLength = analyser.frequencyBinCount;
         const dataArray = new Uint8Array(bufferLength);
 
+        // Play audio on user interaction
+        function startAudio() {
+            audioContext.resume(); // Ensure the audio context is resumed for autoplay policies
+            audio.play();
+            renderVisualizer(); // Start the visualizer rendering
+            window.removeEventListener('click', startAudio); // Remove click listener
+        }
+        window.addEventListener('click', startAudio); // User must click to start audio
+
+        // Visualizer rendering function
         function renderVisualizer() {
             analyser.getByteFrequencyData(dataArray);
             ctx.clearRect(0, 0, canvas.width, canvas.height);
+
             const barWidth = (canvas.width / bufferLength) * 2.5;
             let barHeight;
             let x = 0;
 
             for (let i = 0; i < bufferLength; i++) {
                 barHeight = dataArray[i];
-                const red = Math.min(255, barHeight + 100);
+                const red = Math.min(255, barHeight + 50);
                 const green = Math.min(255, 255 - barHeight);
-                const blue = Math.min(255, 200 - barHeight / 2);
+                const blue = Math.min(255, 150 - barHeight / 2);
 
                 ctx.fillStyle = `rgb(${red},${green},${blue})`;
                 ctx.fillRect(x, canvas.height - barHeight / 2, barWidth, barHeight / 2);
@@ -60,8 +72,6 @@
 
             requestAnimationFrame(renderVisualizer);
         }
-
-        renderVisualizer();
 
         // Mouse interactivity for volume and playback speed
         canvas.addEventListener('mousemove', (e) => {
@@ -72,7 +82,7 @@
             audio.playbackRate = speed.toFixed(2); // Smooth speed adjustment
         });
 
-        // Adjust canvas size dynamically
+        // Resize canvas dynamically
         window.addEventListener('resize', () => {
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
