@@ -1,14 +1,27 @@
-<script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.6.0/p5.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/tone/14.7.77/Tone.min.js"></script>
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Interactive Sound Project</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My First Website</title> 
+    <link rel="stylesheet" href="style.css"> <! Link to CSS file >
 </head>
 <body>
-    <h1>Welcome to My Sound Playground</h1>
-    <canvas id="myCanvas"></canvas>
-    <p>Interact to hear sound!</p>
-    <script src="sketch.js"></script>
+    <h1>Welcome to My First Website!</h1> <! Main title >
+    <p class="welcome-text">
+        Hello there!<br> 
+        This is my very first website.<br>
+        I hope you like it!
+    </p>
+    <img src="image.jpg" alt="A descriptive alt text" class="welcome-image"> <! Addiung an image >
+
+    <!-- Audio Section -->
+    <div class="audio-container">
+        <p>Enjoy some music while you explore:</p>
+        <audio controls>
+            <source src="audio.mp3" type="audio/mpeg"> 
+            Your browser does not support the audio element.
+        </audio>
+    </div>
 </body>
 </html>
