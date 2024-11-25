@@ -49,9 +49,9 @@
 
             for (let i = 0; i < bufferLength; i++) {
                 barHeight = dataArray[i];
-                const red = (barHeight + 25) % 255;
-                const green = (barHeight + 50) % 255;
-                const blue = (barHeight + 75) % 255;
+                const red = Math.min(255, barHeight + 100);
+                const green = Math.min(255, 255 - barHeight);
+                const blue = Math.min(255, 200 - barHeight / 2);
 
                 ctx.fillStyle = `rgb(${red},${green},${blue})`;
                 ctx.fillRect(x, canvas.height - barHeight / 2, barWidth, barHeight / 2);
