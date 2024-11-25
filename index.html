@@ -4,18 +4,18 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>My First Website</title>
-    <link rel="stylesheet" href="style.css"> <!-- Link to CSS file -->
+    <link rel="stylesheet" href="style.css"> <!Link to CSS file>
 </head>
 <body>
-    <h1>Welcome to My First Website!</h1>
+    <h1>Welcome to My Website!</h1>
     <p class="welcome-text">
-        Hello there!<br>
-        This is my very first website.<br>
-        I hope you like it!
+        Hello world!<br>
+        This is my website.<br>
+        Enjoy
     </p>
     <img src="image.jpg" alt="A descriptive alt text" class="welcome-image">
 
-    <!-- Audio Section -->
+    <! Audio Section >
     <div class="audio-container">
         <p>Enjoy some music while you explore:</p>
         <audio id="audio" controls>
@@ -27,9 +27,8 @@
     <script>
         const audio = document.getElementById('audio');
 
-        // Mouse movement event listener
-        document.body.addEventListener('mousemove', (e) => {
-            // Get the canvas size (full window)
+        // Mouse movement
+        document.body.addEventListener('mousemove', (e) => {     
             const width = window.innerWidth;
             const height = window.innerHeight;
 
@@ -39,13 +38,13 @@
             // Map mouse Y to Green (0-255)
             const green = Math.min(255, (e.clientY / height) * 255);
 
-            // Set the Blue value to a static value, e.g., 200
+            // Set the lue value to a static value
             const blue = 200;
 
-            // Change the background color based on mouse movement
+            // Change the background color based on mouse
             document.body.style.backgroundColor = `rgb(${red}, ${green}, ${blue})`;
 
-            // Control the volume with the mouse Y position (invert for intuitive control)
+            // Control the volume with the mouse Y position 
             const volume = 1 - (e.clientY / height);
             audio.volume = volume; // Set the audio volume
         });
