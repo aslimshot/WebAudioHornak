@@ -42,12 +42,13 @@
         const bufferLength = analyser.frequencyBinCount;
         const dataArray = new Uint8Array(bufferLength);
 
-        // Play audio on user interaction
+        // Play audio on user interaction (click to resume AudioContext and start audio)
         function startAudio() {
-            audioContext.resume(); // Ensure the audio context is resumed for autoplay policies
-            audio.play();
-            renderVisualizer(); // Start the visualizer rendering
-            window.removeEventListener('click', startAudio); // Remove click listener
+            audioContext.resume().then(() => {
+                audio.play();
+                renderVisualizer(); // Start the visualizer rendering
+                window.removeEventListener('click', startAudio); // Remove click listener after starting
+            });
         }
         window.addEventListener('click', startAudio); // User must click to start audio
 
